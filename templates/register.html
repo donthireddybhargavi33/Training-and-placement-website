@@ -1,0 +1,335 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Register{% endblock %}
+
+{% block content %}
+<div class="register-wrapper">
+    <div class="register-container">
+        <div class="register-header">
+            <div class="logo">
+                <i class="fas fa-user-graduate"></i>
+                <span>DONOTECH</span>
+            </div>
+            <h2 class="register-title">Student Register</h2>
+        </div>
+
+        {% if messages %}
+            <div class="alert alert-danger">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    
+        <form method="POST" enctype="multipart/form-data" class="register-form">
+            {% csrf_token %}
+            <div class="form-columns">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="username">{{ form.username.label_tag }}</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="form-group">
+                        <label for="email">{{ form.email.label_tag }}</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="form-group">
+                        <label for="phone_number">{{ form.phone_number.label_tag }}</label>
+                        {{ form.phone_number }}
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">{{ form.gender.label_tag }}</label>
+                        {{ form.gender }}
+                    </div>
+                    <div class="form-group">
+                        <label for="date_of_birth">{{ form.date_of_birth.label_tag }}</label>
+                        {{ form.date_of_birth }}
+                    </div>
+                    <div class="form-group">
+                        <label for="college">{{ form.college.label_tag }}</label>
+                        {{ form.college }}
+                    </div>
+                </div>
+                
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="year_semester">{{ form.year_semester.label_tag }}</label>
+                        {{ form.year_semester }}
+                    </div>
+                    <div class="form-group">
+                        <label for="courses_registered">{{ form.courses_registered.label_tag }}</label>
+                        {{ form.courses_registered }}
+                    </div>
+                    <div class="form-group">
+                        <label for="department">{{ form.department.label_tag }}</label>
+                        {{ form.department }}
+                    </div>
+                    <div class="form-group">
+                        <label for="mentor">{{ form.mentor.label_tag }}</label>
+                        {{ form.mentor }}
+                    </div>
+                    <div class="form-group">
+                        <label for="profile_image">{{ form.profile_image.label_tag }}</label>
+                        {{ form.profile_image }}
+                    </div>
+                    <div class="form-group">
+                        <label for="password">
+                            Password
+                        </label>
+                        <div class="password-container">
+                            <input type="password" name="password" id="password" placeholder="Enter your password" required>
+                            <span class="toggle-password" onclick="togglePassword()">
+                                <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="register-btn">Register</button>
+        </form>
+
+<div style="padding: 20px; max-width: 100%; margin: 0 auto; text-align: center;">
+     <a href="{% url 'login' %}" style="margin-top: 1rem; color: var(--primary-color); font-weight: 600; display: inline-block; margin-left: auto; margin-right: auto;">
+        Don't have an account? Login
+    </a>
+</div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    :root {
+        --primary-color: #4361ee;
+        --primary-light: #e0e7ff;
+        --secondary-color: #f72585;
+        --accent-color: #10b981;
+        --dark-color: #1a1a2e;
+        --light-color: #f8f9fa;
+        --text-color: #2d3748;
+        --text-light: #718096;
+        --transition: all 0.3s ease;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+        background-color: #f5f7fa;
+    }
+
+    .register-wrapper {
+        display: flex;
+        min-height: 100vh;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+    }
+
+    .register-container {
+        max-width: 900px;
+        width: 100%;
+        background: white;
+        padding: 3rem;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        width: 100%;
+    }
+
+    .form-column {
+        display: flex;
+        flex-direction: column;
+    }
+
+    @media (max-width: 768px) {
+        .form-columns {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+        
+        .register-container {
+            padding: 2rem 1rem;
+        }
+    }
+
+    .register-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        color: var(--primary-color);
+    }
+
+    .logo i {
+        font-size: 2rem;
+        margin-right: 0.5rem;
+    }
+
+    .logo span {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .register-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--dark-color);
+    }
+
+    .alert {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        animation: fadeIn 0.5s ease;
+        width: 100%;
+    }
+
+    .alert-danger {
+        background-color: #fee2e2;
+        color: #b91c1c;
+        border: 1px solid #fca5a5;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-group label i {
+        margin-right: 0.5rem;
+        color: var(--primary-color);
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: var(--transition);
+        background-color: var(--light-color);
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px var(--primary-light);
+        outline: none;
+    }
+
+    .password-container {
+        position: relative;
+    }
+
+    .password-container input {
+        padding-right: 2.5rem;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: var(--text-light);
+    }
+
+    .register-btn {
+        width: 100%;
+        padding: 1rem;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .register-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: 0.5s;
+    }
+
+    .register-btn:hover::before {
+        left: 100%;
+    }
+
+    .register-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @media (max-width: 576px) {
+        .register-container {
+            padding: 2rem 1rem;
+        }
+    }
+</style>
+
+<script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    }
+</script>
+{% endblock %}

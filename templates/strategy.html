@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Future Strategy - DONOTECH SOLUTIONS{% endblock %}
+
+{% block content %}
+<style>
+        :root {
+        /* Modern Color Palette */
+        --primary-color:#4361ee;
+        --primary-light: #e0e7ff;
+        --primary-dark: #3730a3;
+        }
+    .hero-section {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        padding: 5rem 0;
+        margin-bottom: 3rem;
+    }
+    .section-card {
+        border: none;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--box-shadow);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 2rem;
+    }
+    .section-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+    .card-body {
+        padding: 2rem;
+    }
+    .card-title {
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--dark-color);
+    }
+    .card-text {
+        color: var(--secondary-color);
+        margin-bottom: 1.5rem;
+    }
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        padding: 0.5rem 1.5rem;
+        font-weight: 600;
+    }
+    .btn-primary:hover {
+        background-color: var(--primary-hover);
+        border-color: var(--primary-hover);
+    }
+    .section-header {
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+    .section-header h1 {
+        font-weight: 800;
+        color: var(--dark-color);
+        position: relative;
+        display: inline-block;
+    }
+    .section-header h1:after {
+        content: '';
+        position: absolute;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+    .section-header p {
+        color: var(--secondary-color);
+        max-width: 700px;
+        margin: 1.5rem auto 0;
+    }
+</style>
+
+<section class="hero-section">
+    <div class="container text-center">
+        <a href="{% url 'programs' %}" class="btn btn-light mb-3" style="color:var(--primary-color); font-weight: 600; border-radius: var(--border-radius); padding: 0.5rem 1rem; text-decoration: none; display: inline-block;">&larr; Back to Programs</a>
+        <h1 class="display-4 fw-bold mb-3">Future Strategy</h1>
+        <p class="lead mb-4">Our roadmap for continuous improvement and innovation to help you stay ahead in your career.</p>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="section-card h-100">
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Future Strategy">
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="card-title">Future Strategy</h3>
+                        <p class="card-text">Our roadmap for continuous improvement and innovation to help you stay ahead in your career.</p>
+                        <p class="card-text">Our future strategy at Donotech Solutions is centered on expanding technological expertise, fostering innovation, and enhancing student engagement through real-world projects and industry collaborations. We continuously update our curriculum to align with emerging trends and equip students with skills to excel in the evolving tech landscape.</p>
+                        <p class="card-text">We are committed to building strong partnerships with leading companies to provide students with hands-on experience and career opportunities, investing in cutting-edge tools and resources to support effective learning and project execution.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

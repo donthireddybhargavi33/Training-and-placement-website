@@ -1,0 +1,1130 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home | DONOTECH Solutions{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        /* Modern Color Palette */
+        --primary-color: #4361ee;
+        --primary-light: #e0e7ff;
+        --primary-dark: #3730a3;
+        --secondary-color: #f72585;
+        --secondary-light: #fde2e4;
+        --accent-color: #10b981;
+        --accent-light: #d1fae5;
+        --dark-color: #1a1a2e;
+        --light-color: #f8f9fa;
+        --text-color: #2d3748;
+        --text-light: #718096;
+        
+        /* Design Tokens */
+        --border-radius: 16px;
+        --border-radius-sm: 8px;
+        --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        --box-shadow-lg: 0 15px 50px rgba(0, 0, 0, 0.12);
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        --transition-fast: all 0.15s ease-in-out;
+        
+        /* Gradients */
+        --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, #3a0ca3 100%);
+        --gradient-secondary: linear-gradient(135deg, var(--secondary-color) 0%, #b5179e 100%);
+        --gradient-accent: linear-gradient(135deg, var(--accent-color) 0%, #3b82f6 100%);
+        --gradient-dark: linear-gradient(135deg, var(--dark-color) 0%, #16213e 100%);
+    }
+
+    /* Hero Section - Modern Glass Morphism */
+    .hero-section {
+        background: linear-gradient(135deg, rgba(0, 0, 2, 0.9) 0%, rgba(0, 0, 0, 0.9)100%);
+        color: white;
+        padding: 12rem 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        backdrop-filter: blur(2px);
+    }
+    
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover no-repeat;
+        opacity: 0.2;
+        z-index: -1;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        animation: fadeInUp 1s ease;
+    }
+    
+    .hero-section h1 {
+        font-size: 4rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+        text-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        background: linear-gradient(90deg, white, #e0e7ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .hero-section p {
+        font-size: 1.5rem;
+        max-width: 700px;
+        margin: 0 auto 3rem;
+        opacity: 0.9;
+        color: rgba(255,255,255,0.9);
+    }
+    
+    .btn-hero {
+        padding: 1rem 2.5rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 50px;
+        margin: 0 1rem;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        border: none;
+    }
+    
+    .btn-hero-primary {
+        background: white;
+        color: var(--primary-color);
+        box-shadow: 0 10px 25px rgba(255,255,255,0.3);
+    }
+    
+    .btn-hero-primary:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 15px 35px rgba(255,255,255,0.4);
+    }
+    
+    .btn-hero-secondary {
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        color: white;
+        border: 2px solid rgba(255,255,255,0.3);
+    }
+    
+    .btn-hero-secondary:hover {
+        background: rgba(255,255,255,0.25);
+        transform: translateY(-5px);
+    }
+    
+    /* Floating animation for hero elements */
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+    }
+    
+    .floating {
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    /* Section Styling */
+    .section {
+        padding: 8rem 0;
+        position: relative;
+    }
+    
+    .section-title {
+        text-align: center;
+        margin-bottom: 5rem;
+    }
+    
+    .section-title h2 {
+        font-weight: 800;
+        position: relative;
+        display: inline-block;
+        font-size: 3rem;
+        color: var(--dark-color);
+    }
+    
+    .section-title h2::after {
+        content: '';
+        position: absolute;
+        width: 100px;
+        height: 6px;
+        background: var(--gradient-primary);
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 5px;
+    }
+    
+    .section-title p {
+        max-width: 700px;
+        margin: 2rem auto 0;
+        color: var(--text-light);
+        font-size: 1.25rem;
+    }
+    
+    /* Feature Cards - Modern Glass Cards */
+    .feature-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        border-radius: var(--border-radius);
+        padding: 3rem 2.5rem;
+        height: 100%;
+        box-shadow: var(--box-shadow);
+        transition: var(--transition);
+        border: 1px solid rgba(255,255,255,0.2);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+    
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        background: var(--gradient-primary);
+        transition: height 0.4s ease;
+        z-index: -1;
+    }
+    .feature-card:hover {
+        transform: translateY(-15px);
+        box-shadow: var(--box-shadow-lg);
+        background: rgba(255,255,255,0.9);
+    }
+    
+    .feature-card:hover::before {
+        height: 100%;
+    }
+    
+    .feature-card:hover .feature-icon {
+        transform: rotate(10deg) scale(1.1);
+        color: white;
+    }
+    
+    .feature-card:hover h3,
+    .feature-card:hover p {
+        color: white;
+    }
+    
+    .feature-icon {
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 2rem;
+        transition: var(--transition);
+    }
+    
+    .feature-card h3 {
+        margin-bottom: 1.5rem;
+        transition: var(--transition);
+        font-size: 1.5rem;
+    }
+    
+    .feature-card p {
+        color: var(--text-light);
+        transition: var(--transition);
+        font-size: 1.1rem;
+        line-height: 1.7;
+    }
+    
+    .feature-link {
+        display: inline-block;
+        margin-top: 2rem;
+        color: var(--primary-color);
+        font-weight: 600;
+        transition: var(--transition);
+    }
+    
+    .feature-card:hover .feature-link {
+        color: white;
+    }
+    
+    /* Partners Section - Modern Layout */
+    .partner-section {
+        background-color: #f9fafc;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .partner-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover no-repeat;
+        opacity: 0.03;
+        z-index: 0;
+    }
+    
+    .partner-container {
+        position: relative;
+        z-index: 1;
+       
+    }
+    
+    .partner-logo {
+        height: 100px;
+        object-fit: contain;
+        filter: grayscale(100%) brightness(0.8);
+        transition: var(--transition);
+        padding: 1rem 0.5rem;
+        background: white;
+        border-radius: var(--border-radius-sm);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+       
+    }
+    
+    .partner-logo:hover {
+        filter: grayscale(0%) brightness(1);
+        transform: scale(1.15);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    /* Stats Section - Animated Cards */
+    .stats-section {
+        background: var(--gradient-dark);
+        color: white;
+    }
+    
+    .stats-card {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-10px);
+        background: rgba(255,255,255,0.1);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    }
+    
+    .stats-number {
+        font-size: 4rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 2;
+        background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .stats-card p {
+        position: relative;
+        z-index: 2;
+        opacity: 0.8;
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+    }
+    
+    /* Staff Section - Modern Carousel */
+    .staff-carousel-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+    
+    .staff-viewport {
+        width: calc(100% - 80px);
+        margin: 0 auto;
+        overflow: hidden;
+    }
+    
+    .staff-row {
+        transition: transform 0.5s ease;
+        width: 100%;
+    }
+    
+    .staff-col {
+        flex: 0 0 25%;
+        padding: 0 15px;
+        box-sizing: border-box;
+    }
+    
+    .carousel-control {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,0.5);
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+    }
+    
+    .carousel-control.prev {
+        left: 0;
+    }
+    
+    .carousel-control.next {
+        right: 0;
+    }
+    
+    .carousel-control:hover {
+        background: rgba(0,0,0,0.8);
+    }
+    
+    .staff-img-container {
+        width: 200px;
+        height: 250px;
+        overflow: hidden;
+    }
+    
+    .staff-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    
+    /* CTA Section - Modern Design */
+    .cta-section {
+        background: var(--gradient-secondary);
+        color: white;
+        padding: 8rem 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: -100px;
+        left: -100px;
+        width: 300px;
+        height: 300px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        animation: float 15s infinite alternate;
+    }
+    
+    .cta-section::after {
+        content: '';
+        position: absolute;
+        bottom: -150px;
+        right: -150px;
+        width: 400px;
+        height: 400px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        animation: float 20s infinite alternate-reverse;
+    }
+    
+    .cta-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .cta-section h2 {
+        font-weight: 800;
+        margin-bottom: 2rem;
+        font-size: 3.5rem;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    
+    .cta-section p {
+        font-size: 1.5rem;
+        max-width: 700px;
+        margin: 0 auto 3rem;
+        opacity: 0.9;
+    }
+    
+    .btn-cta {
+        background: white;
+        color: var(--secondary-color);
+        padding: 1.25rem 4rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        border-radius: 50px;
+        transition: var(--transition);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        border: none;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+    
+    .btn-cta::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background: rgba(247, 37, 133, 0.1);
+        transition: var(--transition);
+        z-index: -1;
+    }
+    
+    .btn-cta:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+    
+    .btn-cta:hover::before {
+        width: 100%;
+    }
+    
+ 
+    /* Mentorship Program Styling */
+    .mentorship-container {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        padding: 2.5rem;
+        margin-bottom: 3rem;
+        border-left: 5px solid var(--primary-color);
+    }
+    
+    .mentorship-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .mentorship-icon {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-right: 1rem;
+    }
+    
+    .mentorship-header h3 {
+        font-size: 1.5rem;
+        color: #2c3e50;
+        margin: 0;
+    }
+    
+    .mentorship-content ul {
+        list-style: none;
+        padding-left: 0;
+        margin: 1.5rem 0;
+    }
+    
+    .mentorship-content li {
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: flex-start;
+    }
+    
+    .mentorship-content li i {
+        color: #27ae60;
+        margin-right: 0.8rem;
+        margin-top: 0.2rem;
+    }
+    
+    .highlight-note {
+        background-color: #e3f2fd;
+        padding: 1rem;
+        border-radius: 8px;
+        font-weight: 500;
+        border-left: 3px solid #1976d2;
+    }
+    
+
+
+    /* Partner Section Styling */
+    .partner-section {
+        padding: 5rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .partner-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 30% 50%, rgba(25, 118, 210, 0.05) 0%, transparent 60%);
+        pointer-events: none;
+    }
+   
+    .partner-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        border-radius: 20px;
+        width:250px ;
+    }
+    
+    .partner-logo-container {
+        position: relative;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border-bottom: 1px solid #f0f0f0;
+        object-fit: contain;
+    }
+    
+    .partner-logo {
+        width: 180px;
+        height: 120px;
+        padding:1rem;
+        object-fit: contain;
+        filter: grayscale(0);
+        transition: all 0.3s ease;
+    }
+    
+    .partner-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(25, 118, 210, 0.9) 0%, #4316ee 100%);
+        color: white;
+        border-radius: 20px;
+        opacity: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.3s ease;
+       
+    }
+    
+    .partner-card:hover .partner-overlay {
+        opacity: 1;
+    }
+    
+    .partner-card:hover .partner-logo {
+        filter: grayscale(100%) brightness(200%);
+    }
+    
+    .overlay-content {
+        text-align: center;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+    }
+    
+    .partner-card:hover .overlay-content {
+        transform: translateY(0);
+    }
+    
+    .partner-name {
+        padding: 1rem;
+        text-align: center;
+        background: white;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+ 
+    
+    .badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .premium-badge {
+        background: #ffc107;
+        color: #212529;
+    }
+    
+    .strategic-badge {
+        background: #17a2b8;
+        color: white;
+    }
+    
+    .academic-badge {
+        background: #6c757d;
+        color: white;
+    }
+    
+    .partnership-tiers {
+        margin: 1.5rem 0;
+        text-align: center;
+    }
+    
+    .tier-indicator span {
+        display: inline-block;
+        margin: 0 0.5rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    
+    .tier-premium {
+        background: rgba(255, 193, 7, 0.2);
+        color: #ffc107;
+        border: 1px solid #ffc107;
+    }
+    
+    .tier-strategic {
+        background: rgba(23, 162, 184, 0.2);
+        color: #17a2b8;
+        border: 1px solid #17a2b8;
+    }
+    
+    .tier-academic {
+        background: rgba(108, 117, 125, 0.2);
+        color: #6c757d;
+        border: 1px solid #6c757d;
+    }
+    
+    .collab-cta {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .collab-cta h4 {
+        margin-bottom: 1rem;
+    }
+    
+    .cta-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        flex-wrap: wrap;
+    }
+    
+    @media (max-width: 768px) {
+        .partner-logo-container {
+            height: 140px;
+            padding: 1rem;
+        }
+        
+        .partner-logo {
+            max-height: 60px;
+        }
+        
+        .cta-buttons {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .cta-buttons .btn {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .mentorship-cta {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .date-badge {
+            margin-top: 1rem;
+        }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-delay-1 {
+        animation-delay: 0.2s;
+    }
+    
+    .animate-delay-2 {
+        animation-delay: 0.4s;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+        .hero-section h1 {
+            font-size: 3.5rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+        }
+        
+        .cta-section h2 {
+            font-size: 3rem;
+        }
+    }
+    
+    @media (max-width: 992px) {
+        .hero-section {
+            padding: 8rem 0;
+            min-height: auto;
+        }
+        
+        .hero-section h1 {
+            font-size: 3rem;
+        }
+        
+        .section {
+            padding: 6rem 0;
+        }
+        
+        .feature-card {
+            padding: 2.5rem 2rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .hero-section h1 {
+            font-size: 2.5rem;
+        }
+        
+        .hero-section p {
+            font-size: 1.25rem;
+        }
+        
+        .btn-hero {
+            display: block;
+            width: 80%;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+        }
+        
+        .stats-number {
+            font-size: 3rem;
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+        }
+        
+        .cta-section p {
+            font-size: 1.25rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .hero-section {
+            padding: 6rem 0;
+        }
+        
+        .hero-section h1 {
+            font-size: 2.2rem;
+        }
+        
+        .section {
+            padding: 4rem 0;
+        }
+        
+        .partner-logo {
+            height: 80px;
+            padding: 1.5rem;
+        }
+        
+        .btn-cta {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+        }
+    }
+
+    
+</style>
+
+<!-- Hero Section with Parallax Effect -->
+<section class="hero-section">
+    <div class="container hero-content">
+        <h1 class="floating animate__animated animate__fadeInUp">Transform Your <span class="text-gradient">Tech Career</span></h1>
+        <p class="floating animate-delay-1">DONOTECH Solutions bridges the gap between academic learning and professional success through industry-aligned training and mentorship.</p>
+        <div class="d-flex justify-content-center flex-wrap floating animate-delay-2">
+            <a href="{% url 'programs' %}" class="btn btn-hero btn-hero-primary">
+                <i class="fas fa-rocket me-2"></i> Explore Programs
+            </a>
+            <a href="{% url 'contact' %}" class="btn btn-hero btn-hero-secondary">
+                <i class="fas fa-headset me-2"></i> Contact Us
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section with Animated Cards -->
+<section class="section">
+    <div class="container">
+        <div class="section-title" data-aos="fade-up">
+            <h2>Why Choose DONOTECH</h2>
+            <p>We provide comprehensive solutions for your career development</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Industry Partnerships</h3>
+                    <p>Direct collaboration with top companies to provide real-world experience and placement opportunities.</p>
+                    <a href="#" class="feature-link">
+                        Learn more <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3>Expert Mentors</h3>
+                    <p>Learn from industry professionals with years of practical experience in their fields.</p>
+                    <a href="#" class="feature-link">
+                        Meet our mentors <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>Hands-on Training</h3>
+                    <p>Practical, project-based learning that prepares you for real workplace challenges.</p>
+                    <a href="#" class="feature-link">
+                        View projects <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Enhanced Collaborations Section -->
+<section class="section partner-section bg-light">
+    <div class="container partner-container">
+        <div class="section-title" data-aos="fade-up">
+            <h2 class="text-gradient">Strategic Industry & Academic Partnerships</h2>
+            <p class="lead">Forging powerful connections that drive innovation and career success</p>
+        </div>
+        
+        <!-- Partnership Tiers Indicator -->
+        <div class="partnership-tiers" data-aos="fade-up" data-aos-delay="50">
+            <div class="tier-indicator">
+                <span class="tier-premium">Premium Partners</span>
+                <span class="tier-strategic">Strategic Allies</span>
+                <span class="tier-academic">Academic Network</span>
+            </div>
+        </div>
+        
+        <div class="row justify-content-center g-4 py-3" data-aos="fade-up" data-aos-delay="100">
+            {% for tieup in tieups %}
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="partner-card">
+                    <div class="partner-logo-container">
+                        <img src="{{ tieup.logo.url }}" class="partner-logo" alt="{{ tieup.name|default:'Partner' }}" loading="lazy">
+                        <div class="partner-overlay">
+                            <div class="overlay-content">
+                                <h5>{{ tieup.name }}</h5>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+    </div>
+</section>
+
+
+
+<!-- Stats Section with Animated Counters -->
+<section class="section stats-section">
+    <div class="container">
+        <div class="row g-4">
+
+            
+            <div class="col-md-4 col-5" data-aos="fade-up" data-aos-delay="200">
+                <div class="stats-card">
+                    <div class="stats-number" data-count="10">10+</div>
+                    <p>Industry Partners</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4 col-5" data-aos="fade-up" data-aos-delay="300">
+                <div class="stats-card">
+                    <div class="stats-number" data-count="95">95</div>
+                    <p>Placement Rate</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4 col-5" data-aos="fade-up" data-aos-delay="400">
+                <div class="stats-card">
+                    <div class="stats-number" data-count="20">20</div>
+                    <p>Expert Mentors</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Staff Section with Interactive Carousel -->
+<section class="section staff-section">
+    <div class="container">
+        <div class="section-title" data-aos="fade-up">
+            <h2 class="text-gradient">Meet Our Dream Team</h2>
+            <p>The brilliant minds who make learning extraordinary</p>
+        </div>
+
+        <!-- Mentorship Program Highlight -->
+        <div class="mentorship-container" data-aos="fade-up" data-aos-delay="100">
+            <div class="mentorship-header">
+                <i class="fas fa-chalkboard-teacher mentorship-icon"></i>
+                <h3>Expert Mentorship Program</h3>
+            </div>
+            <div class="mentorship-content">
+                <p>Our distinguished mentors conduct intensive 2-month rotational programs featuring:</p>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Masterclass workshops on cutting-edge topics</li>
+                    <li><i class="fas fa-check-circle"></i> Hands-on project guidance and portfolio reviews</li>
+                    <li><i class="fas fa-check-circle"></i> Industry-specific career mentoring sessions</li>
+                    <li><i class="fas fa-check-circle"></i> Exclusive Q&A sessions with industry leaders</li>
+                </ul>
+            </div>
+
+
+        <!-- Staff carousel would go here -->
+        <div class="staff-carousel">
+            <!-- Carousel content would be implemented here -->
+        </div>
+    </div>
+</section>
+
+
+<!-- CTA Section with Floating Elements -->
+<section class="cta-section">
+    <div class="container cta-content" data-aos="fade-up">
+        <h2>Join DONOTECH Solutions—Your Gateway to Future Success!</h2>
+        <p>Kickstart your journey with cutting-edge training and industry-aligned programs designed to propel your career forward. </p>
+        <a href="{% url 'register' %}" class="btn btn-cta">
+            <i class="fas fa-paper-plane me-2"></i> Apply Now
+        </a>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const staffRow = document.querySelector('.staff-row');
+    const staffItems = document.querySelectorAll('.staff-col');
+    const itemWidth = staffItems[0].offsetWidth;
+    const viewport = document.querySelector('.staff-viewport');
+    const prevBtn = document.querySelector('.carousel-control.prev');
+    const nextBtn = document.querySelector('.carousel-control.next');
+    const totalItems = staffItems.length;
+    let currentPosition = 0;
+    const visibleItems = 4;
+    
+    // Hide arrows if not enough items
+    if (totalItems <= visibleItems) {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+    }
+    
+    // Next button click handler
+    nextBtn.addEventListener('click', function() {
+        if (currentPosition < totalItems - visibleItems) {
+            currentPosition++;
+            staffRow.style.transform = `translateX(-${currentPosition * itemWidth}px)`;
+        }
+        updateControls();
+    });
+    
+    // Previous button click handler
+    prevBtn.addEventListener('click', function() {
+        if (currentPosition > 0) {
+            currentPosition--;
+            staffRow.style.transform = `translateX(-${currentPosition * itemWidth}px)`;
+        }
+        updateControls();
+    });
+    
+    // Update control buttons state
+    function updateControls() {
+        prevBtn.disabled = currentPosition === 0;
+        nextBtn.disabled = currentPosition >= totalItems - visibleItems;
+    }
+    
+    // Initialize controls
+    updateControls();
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        const newItemWidth = staffItems[0].offsetWidth;
+        if (newItemWidth !== itemWidth) {
+            staffRow.style.transform = `translateX(-${currentPosition * newItemWidth}px)`;
+        }
+    });
+});
+
+// Counter animation for stats
+    const counters = document.querySelectorAll('.stats-number');
+    const speed = 200;
+    
+    function animateCounters() {
+        counters.forEach(counter => {
+            const target = +counter.getAttribute('data-count');
+            const count = +counter.innerText;
+            const increment = target / speed;
+            
+            if(count < target) {
+                counter.innerText = Math.ceil(count + increment);
+                setTimeout(animateCounters, 1);
+            } else {
+                counter.innerText = target + (counter.getAttribute('data-count') === '95' ? '%' : '+');
+            }
+        });
+    }
+    
+    // Start animation when stats section is in view
+    const observer = new IntersectionObserver((entries) => {
+        if(entries[0].isIntersecting) {
+            animateCounters();
+        }
+    }, {threshold: 0.5});
+    
+    observer.observe(document.querySelector('.stats-section'));
+
+
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}{% if form.instance.pk %}Edit{% else %}Create{% endif %} Student{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Student</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="{% if form.instance.pk %}{% url 'student_detail' pk=form.instance.pk %}{% else %}{% url 'student_details' %}{% endif %}" 
+                   class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

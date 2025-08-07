@@ -1,0 +1,315 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans 'Admin Login' %}{% endblock %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    
+    :root {
+        --primary-color:  #4361ee;
+        --primary-hover: #3a56d4;
+        --error-color: #ef233c;
+        --text-color: #2b2d42;
+        --light-gray: #edf2f4;
+        --border-radius: 12px;
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    
+
+    /* Login Wrapper */
+    .login-wrapper {
+        display: flex;
+        min-height: 100vh;
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    /* Left Side - Creative Image Section */
+    .login-image {
+        flex: 1;
+        background: linear-gradient(rgba(2, 123, 193, 0.85), rgba(67, 97, 238, 0.85)), 
+        url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .image-overlay {
+        max-width: 500px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+    }
+
+    .login-image h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+        line-height: 1.2;
+        animation: fadeInUp 0.8s ease;
+    }
+
+    .login-image p {
+        font-size: 1.15rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+        line-height: 1.6;
+        animation: fadeInUp 0.8s ease 0.2s forwards;
+        opacity: 0;
+    }
+
+    /* Login Form Container */
+    .login-container {
+        width: 100%;
+        max-width: 420px;
+        padding: 2.5rem;
+        background: white;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .login-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        background: var(--primary-color);
+    }
+    
+    .login-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+    
+    .login-header h2 {
+        color: var(--text-color);
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        font-size: 1.8rem;
+    }
+    
+    .login-header p {
+        color: #6c757d;
+        font-size: 0.95rem;
+    }
+    
+    .login-form .form-group {
+        margin-bottom: 1.75rem;
+        position: relative;
+    }
+    
+    .login-form label {
+        font-weight: 600;
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+        display: block;
+        font-size: 0.95rem;
+    }
+    
+    .login-form input {
+        width: 100%;
+        padding: 0.85rem 1.25rem;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: var(--transition);
+        box-sizing: border-box;
+        background-color: #f8f9fa;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    
+    .login-form input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+        background-color: white;
+        outline: none;
+    }
+    
+    .login-btn {
+        width: 100%;
+        padding: 1rem;
+        font-weight: 600;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: var(--transition);
+        letter-spacing: 0.5px;
+        margin-top: 0.5rem;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    
+    .login-btn:hover {
+        background: var(--primary-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
+    }
+    
+    .login-btn:active {
+        transform: translateY(0);
+    }
+    
+    .alert-danger {
+        background: rgba(239, 35, 60, 0.1);
+        border-left: 4px solid var(--error-color);
+        color: var(--error-color);
+        padding: 1rem;
+        margin-bottom: 1.75rem;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .alert-danger::before {
+        content: '!';
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        background: var(--error-color);
+        color: white;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 0.8rem;
+    }
+    
+    .password-toggle {
+        position: absolute;
+        right: 15px;
+        top: 48px;
+        cursor: pointer;
+        color: #6c757d;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @media (max-width: 992px) {
+        .login-wrapper {
+            flex-direction: column;
+        }
+        
+        .login-image {
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .login-container {
+            max-width: 100%;
+            padding: 3rem 2rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .login-container {
+            padding: 2rem 1.5rem;
+        }
+        
+        .login-header h2 {
+            font-size: 1.6rem;
+        }
+        
+        .login-image h2 {
+            font-size: 2rem;
+        }
+        
+        .login-image p {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<div class="login-wrapper">
+    <!-- Left Side - Creative Image Section -->
+    <div class="login-image">
+        <div class="image-overlay">
+            <h2>Welcome to Admin Portal</h2>
+            <p>Streamline your workflow with our powerful administration tools and management dashboard.</p>
+        </div>
+    </div>
+
+    <!-- Right Side - Login Form -->
+    <div class="login-container">
+        <div class="login-header">
+            <h2>{% trans 'Sign In' %}</h2>
+            <p>{% trans 'Access your admin dashboard' %}</p>
+        </div>
+
+        {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                {% trans "Please correct the errors below." %}
+            </div>
+        {% endif %}
+
+        <form method="post" class="login-form" action="{% url 'admin:login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username">{% trans 'Username:' %}</label>
+                <input type="text" name="username" autofocus autocapitalize="none" 
+                       autocomplete="username" maxlength="150" 
+                       class="form-control" required id="id_username"
+                       placeholder="{% trans 'Enter your username' %}" />
+            </div>
+            
+            <div class="form-group">
+                <label for="id_password">{% trans 'Password:' %}</label>
+                <input type="password" name="password" autocomplete="current-password" 
+                       class="form-control" required id="id_password"
+                       placeholder="{% trans 'Enter your password' %}" />
+                <span class="password-toggle" onclick="togglePassword()">Show</span>
+            </div>
+            
+            {% if next %}
+                <input type="hidden" name="next" value="{{ next }}" />
+            {% endif %}
+            
+            <button type="submit" class="login-btn">
+                {% trans 'Login' %}
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function togglePassword() {
+        const passwordField = document.getElementById('id_password');
+        const toggleBtn = document.querySelector('.password-toggle');
+        
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            toggleBtn.textContent = 'Hide';
+        } else {
+            passwordField.type = 'password';
+            toggleBtn.textContent = 'Show';
+        }
+    }
+</script>
+{% endblock %}

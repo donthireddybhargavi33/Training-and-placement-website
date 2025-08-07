@@ -1,0 +1,590 @@
+{% extends "base.html" %}
+
+{% block title %}Course Curriculum - DONOTECH SOLUTIONS{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #4361ee;
+        --primary-light: #e0e7ff;
+        --primary-dark: #0092d6;
+        --secondary-color: #008fbf;
+        --accent-color: #ff6584;
+        --accent-light: #ff8fa3;
+        --dark-color: #2d3748;
+        --darker-color: #1a202c;
+        --light-color: #f8f9fa;
+        --lighter-color: #ffffff;
+        --success-color: #48bb78;
+        --border-radius: 16px;
+        --box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        --box-shadow-hover: 0 15px 40px rgba(0,0,0,0.15);
+        --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        --gradient-accent: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+    }
+
+
+    /* Hero Section */
+    .hero-section {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        padding: 6rem 0 8rem;
+        position: relative;
+        overflow: hidden;
+        clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        height:650px;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+        background-size: cover;
+        opacity: 0.1;
+        z-index: 0;
+    }
+
+    .hero-section .container {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+    }
+
+    .hero-section h1 {
+        font-size: 4rem;
+        font-weight: 800;
+        text-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        margin-bottom: 1.5rem;
+        background: linear-gradient(to right, white, #e0e0e0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1.2;
+    }
+
+    .hero-section .lead {
+        font-size: 1.6rem;
+        max-width: 800px;
+        margin: 0 auto 2.5rem;
+        opacity: 0.9;
+        font-weight: 300;
+    }
+
+    .btn-light {
+        background: white;
+        color: var(--primary-color) !important;
+        border: none;
+        font-weight: 600;
+        transition: var(--transition);
+        box-shadow: var(--box-shadow);
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .btn-light::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background: var(--gradient);
+        transition: var(--transition);
+        z-index: -1;
+    }
+
+    .btn-light:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--box-shadow-hover);
+        color: white !important;
+    }
+
+    .btn-light:hover::before {
+        width: 100%;
+    }
+
+    /* Floating elements */
+    .floating-elements {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .floating-element {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.1);
+        animation: float 15s infinite linear;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
+        100% { transform: translateY(0) rotate(360deg); }
+    }
+
+    /* Curriculum Section */
+    .curriculum-container {
+        margin-top: -4rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .section-header {
+        position: relative;
+        margin: 5rem 0 3rem;
+        padding-bottom: 1rem;
+        text-align: center;
+    }
+
+    .section-header h3 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        position: relative;
+        display: inline-block;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .section-header h3::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 5px;
+        background: var(--gradient-accent);
+        border-radius: 3px;
+    }
+
+    .year-badge {
+        display: inline-block;
+        background: var(--gradient);
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--box-shadow);
+    }
+
+    .semester-header {
+       
+        font-size: 2rem;
+        color: var(--dark-color);
+        margin: 3rem 0 2rem;
+        padding: 1rem 1.5rem;
+        border-left: 5px solid var(--accent-color);
+        background: rgba(109, 99, 255, 0.05);
+        border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .semester-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--gradient);
+        opacity: 0.03;
+        z-index: -1;
+        
+    }
+
+    .courses-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2.5rem;
+        margin-bottom: 4rem;
+    }
+
+    .section-card {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
+        transition: var(--transition);
+        border: none;
+        position: relative;
+        transform-style: preserve-3d;
+    }
+
+    .section-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        background: var(--gradient);
+    }
+
+    .section-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: var(--box-shadow-hover);
+    }
+
+    .card-body {
+        padding: 2.5rem;
+    }
+
+    .card-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .card-title::before {
+        content: '';
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background: var(--gradient);
+        border-radius: 8px;
+        margin-right: 1rem;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 0.9rem;
+    }
+
+    .card-text {
+        color: #555;
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+        font-size: 1.05rem;
+    }
+
+    .text-muted {
+        font-size: 0.95rem;
+        color: #777 !important;
+    }
+
+    .font-italic {
+        font-style: italic;
+    }
+
+    /* Tool Badges */
+    .tools-container {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px dashed #eee;
+    }
+
+    .tools-badge {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(109, 99, 255, 0.1);
+        color: var(--dark-color);
+        padding: 0.4rem 1rem;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        margin-right: 0.6rem;
+        margin-bottom: 0.6rem;
+        transition: var(--transition);
+    }
+
+    .tools-badge:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(109, 99, 255, 0.2);
+    }
+
+    .tools-badge i {
+        margin-right: 0.4rem;
+        font-size: 0.9rem;
+    }
+
+    /* CTA Section */
+    .cta-section {
+        background: url('https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+        background-size: cover;
+        padding: 6rem 0;
+        position: relative;
+        margin-top: 5rem;
+        clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 100%);
+    }
+
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--gradient);
+        opacity: 0.9;
+    }
+
+    .cta-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        color: white;
+    }
+
+    .cta-content h2 {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .cta-content .lead {
+        font-size: 1.5rem;
+        max-width: 700px;
+        margin: 0 auto 2.5rem;
+        opacity: 0.9;
+    }
+
+    .btn-cta {
+        background: white;
+        color: var(--primary-color) !important;
+        border: none;
+        font-weight: 600;
+        padding: 1rem 2.5rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        transition: var(--transition);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-cta:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        color: var(--primary-color) !important;
+    }
+
+    .btn-cta::after {
+        content: '→';
+        margin-left: 0.5rem;
+        transition: var(--transition);
+    }
+
+    .btn-cta:hover::after {
+        transform: translateX(5px);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+        .hero-section h1 {
+            font-size: 3rem;
+        }
+        
+        .hero-section .lead {
+            font-size: 1.3rem;
+        }
+        
+        .section-header h3 {
+            font-size: 2.3rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 4rem 0 6rem;
+            clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%);
+        }
+        
+        .hero-section h1 {
+            font-size: 2.5rem;
+        }
+        
+        .hero-section .lead {
+            font-size: 1.2rem;
+        }
+        
+        .courses-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .section-header h3 {
+            font-size: 2rem;
+        }
+        
+        .semester-header {
+            font-size: 1.6rem;
+        }
+        
+        .cta-content h2 {
+            font-size: 2.2rem;
+        }
+        
+        .cta-content .lead {
+            font-size: 1.2rem;
+        }
+    }
+
+    /* Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .section-card {
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+    }
+
+    .section-card:nth-child(1) { animation-delay: 0.1s; }
+    .section-card:nth-child(2) { animation-delay: 0.2s; }
+    .section-card:nth-child(3) { animation-delay: 0.3s; }
+    .section-card:nth-child(4) { animation-delay: 0.4s; }
+    .section-card:nth-child(5) { animation-delay: 0.5s; }
+    .section-card:nth-child(6) { animation-delay: 0.6s; }
+
+    /* Year animation */
+    @keyframes scaleIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .year-section {
+        animation: scaleIn 0.5s ease forwards;
+        opacity: 0;
+    }
+
+    .year-section:nth-child(1) { animation-delay: 0.1s; }
+    .year-section:nth-child(2) { animation-delay: 0.3s; }
+    .year-section:nth-child(3) { animation-delay: 0.5s; }
+    .year-section:nth-child(4) { animation-delay: 0.7s; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+
+        <div class="container">
+            <a href="{% url 'programs' %}" class="btn btn-light mb-4">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Programs
+            </a>
+            <h1 class="mb-3">Master Our Curriculum</h1>
+            <p class="lead mb-4">A carefully crafted 4-year journey designed to transform beginners into industry-ready professionals through hands-on learning and real-world projects.</p>
+            <a href="#curriculum" class="btn btn-light btn-lg px-4 py-2">
+                <i class="fas fa-book-open mr-2"></i> Explore Curriculum
+            </a>
+        </div>
+    </section>
+
+    <div class="container curriculum-container py-5" id="curriculum">
+        {% for year in years %}
+            <div class="year-section">
+                <div class="section-header">
+                    <div class="year-badge" style="font-size:25px;font-weight: bolder;">Year {{ year.number }}</div>
+                    <h3>{{ year.theme }}</h3>
+                </div>
+                {% for semester in year.semesters.all %}
+                    <section class="mb-5">
+                        <h4 class="semester-header" style="color:#4361ee;">
+                            <i class="fas fa-graduation-cap mr-2"></i> Semester {{ semester.number }}: {{ semester.title }}
+                        </h4>
+                        <div class="courses-grid">
+                            {% for item in semester.course_items.all %}
+                                <div class="section-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            {{ item.title }}
+                                        </h5>
+                                        {% if item.description %}
+                                            <p class="card-text">{{ item.description }}</p>
+                                        {% else %}
+                                            <p class="card-text text-muted">Comprehensive coverage of essential concepts and practical applications.</p>
+                                        {% endif %}
+                                        {% if item.tools %}
+                                            <div class="tools-container">
+                                                <small class="text-muted font-italic d-block mb-2">Tools & Technologies:</small>
+                                                {% for tool in item.tools.split %}
+                                                    <span class="tools-badge">
+                                                        {% if "python" in tool.lower %}
+                                                            <i class="fab fa-python"></i>
+                                                        {% elif "javascript" in tool.lower %}
+                                                            <i class="fab fa-js"></i>
+                                                        {% elif "react" in tool.lower %}
+                                                            <i class="fab fa-react"></i>
+                                                        {% elif "node" in tool.lower %}
+                                                            <i class="fab fa-node-js"></i>
+                                                        {% elif "git" in tool.lower %}
+                                                            <i class="fab fa-git-alt"></i>
+                                                        {% elif "docker" in tool.lower %}
+                                                            <i class="fab fa-docker"></i>
+                                                        {% elif "aws" in tool.lower %}
+                                                            <i class="fab fa-aws"></i>
+                                                        {% elif "database" in tool.lower %}
+                                                            <i class="fas fa-database"></i>
+                                                        {% elif "html" in tool.lower %}
+                                                            <i class="fab fa-html5"></i>
+                                                        {% elif "css" in tool.lower %}
+                                                            <i class="fab fa-css3-alt"></i>
+                                                        {% else %}
+                                                            <i class="fas fa-code"></i>
+                                                        {% endif %}
+                                                        {{ tool }}
+                                                    </span>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </section>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="mb-4">Ready to Start Your Journey?</h2>
+                <p class="lead mb-5">Join our next cohort and transform your career with hands-on, project-based learning.</p>
+                <a href="{% url 'register' %}" class="btn-cta">
+                    Apply Now <i class="fas fa-paper-plane ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

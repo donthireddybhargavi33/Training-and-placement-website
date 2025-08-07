@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %}Student Details{% endblock %}
+{% block content %}
+<style>
+    h2.mb-4 {
+        color: #4361ee;
+        font-weight: 800;
+        position: relative;
+        display: inline-block;
+        margin-bottom: 1.5rem;
+    }
+    h2.mb-4::after {
+        content: '';
+        position: absolute;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(90deg, #4361ee 0%, #4361ee 100%);
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 10px 30px rgba(110, 72, 170, 0.2);
+        border-radius: 12px;
+        margin-bottom: 1rem;
+    }
+
+    table.table {
+        min-width: 800px; /* Ensures the table won't squeeze too much on small screens */
+        width: 100%;
+    }
+
+    @media (max-width: 768px) {
+        h2.mb-4 {
+            font-size: 1.4rem;
+        }
+
+        thead.thead-dark th,
+        tbody td {
+            font-size: 0.9rem;
+            padding: 0.5rem;
+        }
+    }
+    tbody tr {
+        border-bottom: 1px solid #ddd;
+    }
+    tbody tr:last-child {
+        border-bottom: none;
+    }
+    tbody td {
+        padding: 0.75rem 1rem;
+        vertical-align: middle;
+    }
+</style>
+<div class="container mt-4">
+    {% if is_mentor_view %}
+    <a href="{% url 'mentor_dashboard' %}" class="btn btn-light mb-3" style="color:#4361ee; font-weight: 600; border-radius: 6px; padding: 0.5rem 1rem; text-decoration: none; display: inline-block;">&larr; Dashboard</a>
+    {% endif %}
+    <h2 class="mb-4">All Student Details</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Year/Semester</th>
+                    <th>Courses Registered</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.user }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.department }}</td>
+                    <td>{{ student.year_semester }}</td>
+                    <td>
+                        {% for course in student.courses_registered.all %}
+                            {{ course.title }}{% if not forloop.last %}, {% endif %}
+                        {% empty %}
+                            No courses registered
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

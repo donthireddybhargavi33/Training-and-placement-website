@@ -1,0 +1,527 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Login{% endblock %}
+
+{% block content %}
+<div class="login-wrapper">
+    <!-- Left Side - Creative Image Section -->
+    <div class="login-image">
+        <div class="image-overlay">
+            <h2>Welcome Back!</h2>
+            <p>Join our community of learners and mentors</p>
+            <div class="floating-icons">
+                <i class="fas fa-graduation-cap"></i>
+                <i class="fas fa-laptop-code"></i>
+                <i class="fas fa-chalkboard-teacher"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side - Login Form -->
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo">
+                <i class="fas fa-user-graduate"></i>
+                <span>DONOTECH</span>
+            </div>
+            <h2 class="login-title">Login to Your Account</h2>
+            <p class="login-subtitle">Enter your credentials to continue</p>
+        </div>
+
+        {% if messages %}
+            <div class="alert alert-danger">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST" class="login-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="role-select">
+                    <i class="fas fa-user-tag"></i> Select Your Role
+                </label>
+                <select name="role" id="role-select" required onchange="showRoleFields()" class="role-select">
+                    <option value="">-- Select Role --</option>
+                    <option value="STUDENT">Student</option>
+                    <option value="MENTOR">Mentor</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="username-input">
+                    <i class="fas fa-user"></i> Username
+                </label>
+                <input type="text" name="username" id="username-input" placeholder="Enter your username" required style="display:none;">
+            </div>
+
+            <div class="form-group">
+                <label for="password">
+                    <i class="fas fa-lock"></i> Password
+                </label>
+                <div class="password-container">
+                    <input type="password" name="password" id="password" placeholder="Enter your password" required>
+                    <span class="toggle-password" onclick="togglePassword()">
+                        <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                    </span>
+                </div>
+            </div>
+
+            <button type="submit" class="login-btn">
+                <span>Login</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+<div style="padding: 20px; max-width: 100%; margin: 0 auto; text-align: center;">
+     <a href="{% url 'register' %}" style="margin-top: 1rem; color: var(--primary-color); font-weight: 600; display: inline-block; margin-left: auto; margin-right: auto;">
+        Don't have an account? Register here
+    </a>
+</div>
+
+
+    </div>
+</div>
+
+<style>
+    /* Base Styles */
+    :root {
+        --primary-color: #4361ee;
+        --primary-light: #e0e7ff;
+        --secondary-color: #f72585;
+        --accent-color: #10b981;
+        --dark-color: #1a1a2e;
+        --light-color: #f8f9fa;
+        --text-color: #2d3748;
+        --text-light: #718096;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+        background-color: #f5f7fa;
+    }
+
+    /* Login Wrapper */
+    .login-wrapper {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    /* Left Side - Creative Image Section */
+    .login-image {
+        flex: 1;
+        background: linear-gradient(rgba(2, 123, 193, 0.8), rgba(67, 97, 238, 0.8)), 
+        url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .image-overlay {
+        max-width: 500px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+    }
+
+    .login-image h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+        animation: fadeInUp 0.8s ease;
+    }
+
+    .login-image p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+        animation: fadeInUp 0.8s ease 0.2s forwards;
+        opacity: 0;
+    }
+
+    .floating-icons {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 3rem;
+        animation: fadeInUp 0.8s ease 0.4s forwards;
+        opacity: 0;
+    }
+
+    .floating-icons i {
+        font-size: 2.5rem;
+        background: rgba(255,255,255,0.2);
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(5px);
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-icons i:nth-child(1) {
+        animation-delay: 0s;
+    }
+    .floating-icons i:nth-child(2) {
+        animation-delay: 1s;
+    }
+    .floating-icons i:nth-child(3) {
+        animation-delay: 2s;
+    }
+
+    /* Right Side - Login Form */
+    .login-container {
+        flex: 1;
+        max-width: 500px;
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: rgb(255, 255, 255);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .login-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        color: var(--primary-color);
+    }
+
+    .logo i {
+        font-size: 2rem;
+        margin-right: 0.5rem;
+    }
+
+    .logo span {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .login-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .login-subtitle {
+        color: var(--text-light);
+        font-size: 1rem;
+    }
+
+    /* Form Styles */
+    .login-form {
+        margin-top: 1rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--text-color);
+        display: flex;
+        align-items: center;
+    }
+
+    .form-group label i {
+        margin-right: 0.5rem;
+        color: var(--primary-color);
+    }
+
+    .login-form input, 
+    .login-form select {
+        width: 100%;
+        padding: 0.8rem 1rem 0.8rem 2.5rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: var(--transition);
+        background-color: var(--light-color);
+    }
+
+    .login-form input:focus, 
+    .login-form select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px var(--primary-light);
+        outline: none;
+    }
+
+    .login-form input::placeholder {
+        color: #a0aec0;
+    }
+
+    /* Password Field */
+    .password-container {
+        position: relative;
+    }
+
+    .password-container input {
+        padding-right: 2.5rem;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: var(--text-light);
+    }
+
+    /* Form Options */
+    .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 1.5rem 0;
+    }
+
+    .remember-me {
+        display: flex;
+        align-items: center;
+    }
+
+    .remember-me input {
+        margin-right: 0.5rem;
+    }
+
+    .forgot-password {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.2s ease;
+    }
+
+    .forgot-password:hover {
+        color: var(--secondary-color);
+        text-decoration: underline;
+    }
+
+    /* Login Button */
+    .login-btn {
+        width: 100%;
+        padding: 1rem;
+        background: var(--gradient-primary);
+        color: white;
+        background-color:#4361ee;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .login-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: 0.5s;
+    }
+
+    .login-btn:hover::before {
+        left: 100%;
+    }
+
+    .login-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+
+    .login-btn i {
+        transition: transform 0.3s ease;
+    }
+
+    .login-btn:hover i {
+        transform: translateX(5px);
+    }
+
+
+
+    /* Alert Messages */
+    .alert {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .alert-danger {
+        background-color: #fee2e2;
+        color: #b91c1c;
+        border: 1px solid #fca5a5;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+        from { 
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .login-wrapper {
+            flex-direction: column;
+        }
+
+        .login-image {
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .login-container {
+            max-width: 100%;
+            padding: 2rem;
+        }
+
+        .floating-icons {
+            margin-top: 1.5rem;
+        }
+
+        .floating-icons i {
+            width: 60px;
+            height: 60px;
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .login-image h2 {
+            font-size: 2rem;
+        }
+
+        .login-image p {
+            font-size: 1rem;
+        }
+
+        .form-options {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .forgot-password {
+            margin-top: 0.5rem;
+        }
+    }
+
+    
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    }
+
+    function showRoleFields() {
+        var role = document.getElementById('role-select').value;
+        var usernameInput = document.getElementById('username-input');
+        
+        if (role === 'STUDENT' || role === 'MENTOR') {
+            usernameInput.style.display = 'block';
+            usernameInput.placeholder = role === 'STUDENT' 
+                ? 'Enter your username' 
+                : 'Enter mentor username';
+            
+            // Animate the appearance
+            usernameInput.style.opacity = '0';
+            usernameInput.style.transform = 'translateY(10px)';
+            usernameInput.style.transition = 'all 0.3s ease';
+            
+            setTimeout(() => {
+                usernameInput.style.opacity = '1';
+                usernameInput.style.transform = 'translateY(0)';
+            }, 10);
+        } else {
+            // Animate the disappearance
+            usernameInput.style.opacity = '0';
+            usernameInput.style.transform = 'translateY(10px)';
+            
+            setTimeout(() => {
+                usernameInput.style.display = 'none';
+            }, 300);
+        }
+    }
+
+    // Add animation to form elements when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const formGroups = document.querySelectorAll('.form-group');
+        
+        formGroups.forEach((group, index) => {
+            group.style.opacity = '0';
+            group.style.transform = 'translateY(20px)';
+            group.style.transition = `all 0.5s ease ${index * 0.1}s`;
+            
+            setTimeout(() => {
+                group.style.opacity = '1';
+                group.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Student-Logged Out{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+    <h2>You have been logged out successfully.</h2>
+    <a href="{% url 'home' %}" class="btn btn-primary">Home</a>
+</div>
+{% endblock %}

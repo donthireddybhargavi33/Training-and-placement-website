@@ -1,0 +1,551 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mentor Dashboard | DONOTECH{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        --primary: #4361ee;
+        --primary-light: #4895ef;
+        --secondary: #3f37c9;
+        --dark: #1b263b;
+        --light: #f8f9fa;
+        --success: #4cc9f0;
+        --warning: #f72585;
+        --gray: #adb5bd;
+        --white: #ffffff;
+        --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    
+    .dashboard-container {
+        display: flex;
+        min-height: 100vh;
+        background: var(--light);
+    }
+    
+    /* Sidebar Styling */
+    .sidebar {
+        width: 280px;
+        background: linear-gradient(135deg, var(--dark), var(--secondary));
+        color: var(--white);
+        padding: 2rem 1.5rem;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        z-index: 100;
+    }
+    
+    .sidebar-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        animation: fadeIn 0.8s ease;
+    }
+    
+    .sidebar-header img {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 1rem;
+        border: 3px solid var(--primary-light);
+        box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .sidebar-header img:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+    }
+    
+    .sidebar-header h4 {
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        font-size: 1.2rem;
+    }
+    
+    .sidebar-header small {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.85rem;
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+        margin-top: 0.5rem;
+    }
+    
+    .sidebar-nav {
+        list-style: none;
+        padding: 0;
+        margin-top: 2rem;
+    }
+    
+    .sidebar-item {
+        margin-bottom: 0.75rem;
+        animation: slideInLeft 0.5s ease;
+        animation-fill-mode: both;
+    }
+    
+    .sidebar-item:nth-child(1) { animation-delay: 0.2s; }
+    .sidebar-item:nth-child(2) { animation-delay: 0.3s; }
+    .sidebar-item:nth-child(3) { animation-delay: 0.4s; }
+    
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+        padding: 0.85rem 1.25rem;
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+    
+    .sidebar-link i {
+        margin-right: 12px;
+        font-size: 1.1rem;
+        width: 24px;
+        text-align: center;
+    }
+    
+    .sidebar-link:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: var(--white);
+        transform: translateX(5px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .sidebar-link.active {
+        background: var(--primary-light);
+        color: var(--white);
+        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+    }
+    
+    .sidebar-link.active:hover {
+        transform: none;
+    }
+    
+    /* Main Content Styling */
+    .main-content {
+        flex: 1;
+        padding: 2.5rem 3rem;
+        background: var(--light);
+        animation: fadeIn 0.8s ease;
+    }
+    
+    .welcome-card {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 2.5rem;
+        margin-bottom: 2.5rem;
+        box-shadow: var(--card-shadow);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+    }
+    
+    .welcome-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .profile-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+    
+    .profile-img {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 2rem;
+        border: 3px solid var(--primary-light);
+        box-shadow: 0 4px 15px rgba(67, 97, 238, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .profile-img:hover {
+        transform: scale(1.03);
+        box-shadow: 0 6px 20px rgba(67, 97, 238, 0.3);
+    }
+    
+    .profile-header h2 {
+        color: var(--dark);
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        font-size: 1.8rem;
+    }
+    
+    .profile-header .text-muted {
+        color: var(--gray);
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    
+    .stats-card {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+        border-top: 4px solid var(--primary);
+        text-align: center;
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+        line-height: 1;
+    }
+    
+    .stat-label {
+        color: var(--gray);
+        font-size: 0.95rem;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Students List */
+    .card {
+        background: var(--white);
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 2.5rem;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .card-header {
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .card-header h3 {
+        color: var(--dark);
+        font-weight: 600;
+        font-size: 1.3rem;
+        margin: 0;
+    }
+    
+    .card-body {
+        padding: 0;
+    }
+    
+    .student-card {
+        display: flex;
+        align-items: center;
+        padding: 1.5rem 2rem;
+        transition: all 0.3s ease;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .student-card:last-child {
+        border-bottom: none;
+    }
+    
+    .student-card:hover {
+        background: rgba(67, 97, 238, 0.03);
+        transform: translateX(5px);
+    }
+    
+    .student-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 1.5rem;
+        border: 2px solid var(--primary-light);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .student-card:hover .student-avatar {
+        transform: scale(1.1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+    
+    .student-info {
+        flex: 1;
+    }
+    
+    .student-name {
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: var(--dark);
+    }
+    
+    .student-email {
+        color: var(--gray);
+        font-size: 0.85rem;
+    }
+    
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem 1.25rem;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        border: none;
+        white-space: nowrap;
+    }
+    
+    .btn-outline-primary {
+        color: var(--primary);
+        background: transparent;
+        border: 1px solid var(--primary);
+    }
+    
+    .btn-outline-primary:hover {
+        background: var(--primary);
+        color: var(--white);
+        box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideInLeft {
+        from { 
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+        .main-content {
+            padding: 2rem;
+        }
+    }
+    
+    @media (max-width: 992px) {
+        .dashboard-container {
+            flex-direction: column;
+        }
+        
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: relative;
+            padding: 1.5rem;
+        }
+        
+        .sidebar-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .sidebar-item {
+            margin-bottom: 0;
+            flex: 1;
+            min-width: 160px;
+        }
+        
+        .sidebar-link {
+            justify-content: center;
+            padding: 0.75rem;
+        }
+        
+        .sidebar-link:hover {
+            transform: translateY(-3px);
+        }
+        
+        .main-content {
+            padding: 1.5rem;
+        }
+        
+        .profile-header {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .profile-img {
+            margin-right: 0;
+            margin-bottom: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .welcome-card {
+            padding: 1.5rem;
+        }
+        
+        .profile-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .student-card {
+            flex-direction: column;
+            text-align: center;
+            padding: 1.5rem;
+        }
+        
+        .student-avatar {
+            margin-right: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .student-info {
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .sidebar-header img {
+            width: 70px;
+            height: 70px;
+        }
+        
+        .sidebar-link {
+            font-size: 0.85rem;
+            padding: 0.6rem;
+        }
+        
+        .sidebar-link i {
+            margin-right: 8px;
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<div class="dashboard-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            {% if mentor_profile.profile_image %}
+                <img src="{{ mentor_profile.profile_image.url }}" alt="Profile">
+            {% else %}
+                <img src="{% static 'images/default-user.png' %}" alt="Profile">
+            {% endif %}
+            <h4>{{ mentor_profile.user }}</h4>
+            <small>Mentor</small>
+        </div>
+        
+        <nav>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'mentor_student_details' %}" class="sidebar-link">
+                        <i class="fas fa-users"></i>
+                        Students
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'logout' %}" class="sidebar-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="welcome-card">
+            <div class="profile-header">
+                {% if mentor_profile.profile_image %}
+                    <img src="{{ mentor_profile.profile_image.url }}" class="profile-img" alt="Profile">
+                {% else %}
+                    <img src="{% static 'images/default-user.png' %}" class="profile-img" alt="Profile">
+                {% endif %}
+                <div>
+                    <h2>Welcome back, {{ mentor_profile.user.first_name|default:mentor_profile.user.username }}</h2>
+                    <p class="text-muted">Here's what's happening with your students today</p>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stats-card">
+                    <div class="stat-number">{{ students|length }}</div>
+                    <div class="stat-label">Students</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Your Students</h3>
+            </div>
+            <div class="card-body">
+                {% for student in students %}
+                <div class="student-card">
+                    {% if student.profile_image %}
+                        <img src="{{ student.profile_image.url }}" alt="{{ student.user }}" class="student-avatar">
+                    {% else %}
+                        <img src="{% static 'images/default-user.png' %}" alt="{{ student.user }}" class="student-avatar">
+                    {% endif %}
+                    <div class="student-info">
+                        <div class="student-name">{{ student.user }}</div>
+                        <div class="student-email">{{ student.email }}</div>
+                    </div>
+                    <a href="{% url 'mentor_student_details' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-eye mr-1"></i> View
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<!-- Inter font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+{% endblock %}

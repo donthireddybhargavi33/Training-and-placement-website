@@ -1,0 +1,774 @@
+{% extends "base.html" %}
+
+{% block title %}Programs - DONOTECH SOLUTIONS{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        /* Modern Color Palette */
+        --primary-color: #4361ee;
+        --primary-light: #e0e7ff;
+        --primary-dark: #3730a3;
+        --secondary-color: #f72585;
+        --secondary-light: #fde2e4;
+        --accent-color: #10b981;
+        --accent-light: #d1fae5;
+        --dark-color: #1a1a2e;
+        --light-color: #f8f9fa;
+        --text-color: #2d3748;
+        --text-light: #718096;
+        
+        /* Design Tokens */
+        --border-radius: 16px;
+        --border-radius-sm: 8px;
+        --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        --box-shadow-lg: 0 15px 50px rgba(0, 0, 0, 0.12);
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        --transition-fast: all 0.15s ease-in-out;
+        
+        /* Gradients */
+        --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, #0c0ca3 100%);
+        --gradient-secondary: linear-gradient(135deg, var(--secondary-color) 0%, #b5179e 100%);
+        --gradient-accent: linear-gradient(135deg, var(--accent-color) 0%, #0700d2ff 100%);
+        --gradient-dark: linear-gradient(135deg, var(--dark-color) 0%, #16213e 100%);
+    }
+
+    /* Base Styles */
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        background-color: var(--light-color);
+    }
+
+    /* Hero Section - Animated Gradient Background */
+    .programs-hero {
+        background: linear-gradient(-45deg, #4361ee, #3a0ca3, #f72585);
+        background-size: 400% 400%;
+        color: white;
+        padding: 8rem 0 6rem;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        margin-bottom: 0;
+        height: 100vh;
+        min-height: 600px;
+        max-height: 800px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: gradientBG 15s ease infinite;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 0.8s ease-out forwards;
+        opacity: 0;
+    }
+    
+    .back-btn {
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(5px);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.3);
+        padding: 0.75rem 1.75rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 2rem;
+        text-decoration: none;
+        animation: fadeIn 0.8s ease-out 0.2s forwards;
+        opacity: 0;
+    }
+    
+    .back-btn:hover {
+        background: rgba(255,255,255,0.3);
+        transform: translateX(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .hero-title {
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    
+    .hero-subtitle {
+        font-size: clamp(1.2rem, 2vw, 1.5rem);
+        max-width: 800px;
+        margin: 0 auto 2rem;
+        opacity: 0.9;
+        animation: fadeInUp 0.8s ease-out 0.3s forwards;
+        opacity: 0;
+    }
+    
+    /* Floating Particles Animation */
+    .particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 0;
+    }
+    
+    .particle {
+        position: absolute;
+        background: rgba(255,255,255,0.2);
+        border-radius: 50%;
+        animation: floatParticle linear infinite;
+    }
+    
+    /* Programs Grid */
+    .programs-section {
+        padding: 6rem 0;
+        position: relative;
+        margin-bottom: 0;
+    }
+    
+    .section-header {
+        text-align: center;
+        margin-bottom: 5rem;
+    }
+    
+    .section-header h2 {
+        font-weight: 800;
+        color: var(--dark-color);
+        position: relative;
+        display: inline-block;
+        font-size: clamp(1.8rem, 3vw, 2.5rem);
+    }
+    
+    .section-header h2::after {
+        content: '';
+        position: absolute;
+        width: 80px;
+        height: 5px;
+        background: var(--gradient-primary);
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 3px;
+    }
+    
+    .section-header p {
+        color: var(--text-light);
+        max-width: 700px;
+        margin: 1.5rem auto 0;
+        font-size: 1.1rem;
+    }
+    
+    /* Program Cards - Modern Design with Icons */
+    .program-card {
+        border: none;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--box-shadow);
+        transition: var(--transition);
+        margin-bottom: 2rem;
+        height: 100%;
+        position: relative;
+        background: white;
+        opacity: 0;
+        transform: translateY(20px);
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .program-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: var(--gradient-primary);
+        transition: height 0.3s ease;
+        z-index: 1;
+    }
+    
+    .program-card:hover {
+        transform: translateY(-10px);
+        box-shadow: var(--box-shadow-lg);
+    }
+    
+    .program-card:hover::before {
+        height: 10px;
+    }
+    
+    .card-icon-container {
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary-light);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .card-icon {
+        font-size: 4rem;
+        color: var(--primary-color);
+        transition: var(--transition);
+        z-index: 2;
+    }
+    
+    .program-card:hover .card-icon {
+        transform: scale(1.1);
+        color: var(--primary-dark);
+    }
+    
+    .card-icon-container::before {
+        content: '';
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        background: rgba(255,255,255,0.5);
+        border-radius: 50%;
+        top: -50px;
+        right: -50px;
+        transition: var(--transition);
+    }
+    
+    .program-card:hover .card-icon-container::before {
+        transform: scale(1.2);
+    }
+    
+    .card-body {
+        padding: 2rem;
+        position: relative;
+        z-index: 2;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .card-title {
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--dark-color);
+        font-size: 1.5rem;
+    }
+    
+    .card-text {
+        color: var(--text-light);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+        flex-grow: 1;
+    }
+    
+    .program-badge {
+        position: absolute;
+        top: -20px;
+        right: 20px;
+        background: var(--gradient-accent);
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        z-index: 3;
+    }
+    
+    .btn-program {
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.75rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        position: relative;
+        overflow: hidden;
+        align-self: flex-start;
+    }
+    
+    .btn-program::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255,0.1);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .btn-program:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+        color: white;
+    }
+    
+    .btn-program:hover::after {
+        transform: translateX(0);
+    }
+    
+    .btn-program i {
+        transition: transform 0.3s ease;
+    }
+    
+    .btn-program:hover i {
+        transform: translateX(3px);
+    }
+
+    .carousel-nav {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+    
+    .carousel-dot {
+        width: 12px;
+        height: 12px;
+        background: var(--primary-light);
+        border-radius: 50%;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .carousel-dot.active {
+        background: var(--primary-color);
+        transform: scale(1.2);
+    }
+    
+    /* CTA Section */
+    .cta-section {
+        background: var(--gradient-secondary);
+        color: white;
+        padding: 6rem 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 0;
+    }
+    
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        left: -50px;
+        width: 200px;
+        height: 200px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        animation: float 15s infinite alternate;
+    }
+    
+    .cta-section::after {
+        content: '';
+        position: absolute;
+        bottom: -80px;
+        right: -80px;
+        width: 250px;
+        height: 250px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        animation: float 20s infinite alternate-reverse;
+    }
+    
+    .cta-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .cta-title {
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        text-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    
+    .cta-text {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        max-width: 700px;
+        margin: 0 auto 3rem;
+        opacity: 0.9;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    
+    .btn-cta {
+        background: white;
+        color: var(--secondary-color);
+        padding: 1rem 3rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        border-radius: 50px;
+        transition: var(--transition);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        border: none;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    
+    .btn-cta::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background: rgba(247, 37, 133, 0.1);
+        transition: var(--transition);
+        z-index: -1;
+    }
+    
+    .btn-cta:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    }
+    
+    .btn-cta:hover::before {
+        width: 100%;
+    }
+    
+    /* Animations */
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    @keyframes floatParticle {
+        0% { transform: translateY(0) rotate(0deg); }
+        100% { transform: translateY(-1000px) rotate(720deg); }
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); }
+        50% { transform: translate(-20px, 20px) rotate(2deg); }
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes fadeInUp {
+        from { 
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .programs-section {
+            padding: 4rem 0;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .programs-hero {
+            padding: 6rem 0 4rem;
+            height: auto;
+            min-height: 500px;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<!-- Hero Section -->
+<section class="programs-hero">
+    <div class="particles" id="particles"></div>
+    <div class="container hero-content">
+        <a href="{% url 'home' %}" class="back-btn">
+            <i class="fas fa-arrow-left me-2"></i> Back to Home
+        </a>
+        <h1 class="hero-title">Our Professional Programs</h1>
+        <p class="hero-subtitle">Comprehensive learning and career development solutions designed to propel your professional journey forward.</p>
+    </div>
+</section>
+
+<!-- Programs Grid -->
+<section class="programs-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Transform Your Career</h2>
+            <p>Choose from our industry-leading programs designed to give you the competitive edge</p>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Professional Courses -->
+            <div class="col-md-6 col-lg-4">
+                <div class="program-card">
+                    <div class="card-icon-container">
+                        <i class="fas fa-graduation-cap card-icon"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Professional Courses</h3>
+                        <p class="card-text">Enhance your skills with our specialized courses designed by industry experts to meet current market demands.</p>
+                        <a href="{% url 'courses' %}" class="btn btn-program">
+                            View Courses <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Internship Programs -->
+            <div class="col-md-6 col-lg-4">
+                <div class="program-card">
+                    <div class="card-icon-container">
+                        <i class="fas fa-briefcase card-icon"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Internship Programs</h3>
+                        <p class="card-text">Gain practical experience through our comprehensive internship programs bridging academic learning and professional requirements.</p>
+                        <a href="{% url 'internship' %}" class="btn btn-program">
+                            Explore Internships <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Career Opportunities -->
+            <div class="col-md-6 col-lg-4">
+                <div class="program-card">
+                    <div class="card-icon-container">
+                        <i class="fas fa-user-tie card-icon"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Career Opportunities</h3>
+                        <p class="card-text">Discover exciting job opportunities and kickstart your career with our placement assistance programs.</p>
+                        <a href="{% url 'jobs' %}" class="btn btn-program">
+                            View Openings <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Real-time Projects -->
+            <div class="col-md-6 col-lg-4">
+                <div class="program-card">
+                    <div class="card-icon-container">
+                        <i class="fas fa-project-diagram card-icon"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Real-time Projects</h3>
+                        <p class="card-text">Work on industry-relevant projects with expert guidance to build your portfolio and gain practical experience.</p>
+                        <a href="{% url 'projects' %}" class="btn btn-program">
+                            Browse Projects <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Future Strategy -->
+            <div class="col-md-6 col-lg-4">
+                <div class="program-card">
+                    <div class="card-icon-container">
+                        <i class="fas fa-chart-line card-icon"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Future Strategy</h3>
+                        <p class="card-text">Our roadmap for continuous improvement and innovation to help you stay ahead in your career.</p>
+                        <a href="{% url 'strategy' %}" class="btn btn-program">
+                            Learn More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container cta-content">
+        <h2 class="cta-title">Ready to Transform Your Career?</h2>
+        <p class="cta-text">Join thousands of professionals who have accelerated their careers with our programs.</p>
+        <a href="{% url 'register' %}" class="btn btn-cta">
+            <i class="fas fa-paper-plane me-2"></i> Get Started Today
+        </a>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Create floating particles for hero section
+    function createParticles() {
+        const particlesContainer = document.getElementById('particles');
+        if (!particlesContainer) return;
+        
+        const particleCount = 15;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Random size between 5px and 15px
+            const size = Math.random() * 10 + 5;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // Random position
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            
+            // Random opacity
+            particle.style.opacity = Math.random() * 0.5 + 0.1;
+            
+            // Random animation duration between 10s and 30s
+            const duration = Math.random() * 20 + 10;
+            particle.style.animationDuration = `${duration}s`;
+            
+            // Random delay
+            particle.style.animationDelay = `${Math.random() * 5}s`;
+            
+            particlesContainer.appendChild(particle);
+        }
+    }
+    
+    // Initialize animations when elements come into view
+    const animateOnScroll = () => {
+        // Animate program cards
+        const programCards = document.querySelectorAll('.program-card');
+        programCards.forEach((card, index) => {
+            const delay = index * 0.1;
+            card.style.transition = `opacity 0.6s ease ${delay}s, transform 0.6s ease ${delay}s`;
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            observer.observe(card);
+        });
+        
+        // Animate CTA section elements
+        const ctaSection = document.querySelector('.cta-section');
+        if (ctaSection) {
+            const ctaObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const title = entry.target.querySelector('.cta-title');
+                        const text = entry.target.querySelector('.cta-text');
+                        const button = entry.target.querySelector('.btn-cta');
+                        
+                        if (title) {
+                            title.style.transition = 'opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s';
+                            title.style.opacity = 1;
+                            title.style.transform = 'translateY(0)';
+                        }
+                        
+                        if (text) {
+                            text.style.transition = 'opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s';
+                            text.style.opacity = 1;
+                            text.style.transform = 'translateY(0)';
+                        }
+                        
+                        if (button) {
+                            button.style.transition = 'opacity 0.6s ease 0.6s, transform 0.6s ease 0.6s';
+                            button.style.opacity = 1;
+                            button.style.transform = 'translateY(0)';
+                        }
+                        
+                        ctaObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+            
+            ctaObserver.observe(ctaSection);
+        }
+    };
+    
+    // Testimonial Carousel
+    function initTestimonialCarousel() {
+        const slides = document.querySelectorAll('.testimonial-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+        let currentSlide = 0;
+        
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentSlide = index;
+        }
+        
+        function nextSlide() {
+            let nextIndex = (currentSlide + 1) % slides.length;
+            showSlide(nextIndex);
+        }
+        
+        // Set up dot navigation
+        dots.forEach(dot => {
+            dot.addEventListener('click', function() {
+                const slideIndex = parseInt(this.getAttribute('data-slide'));
+                showSlide(slideIndex);
+            });
+        });
+        
+        // Auto-rotate slides every 5 seconds
+        setInterval(nextSlide, 5000);
+    }
+    
+    // Run all initializations
+    createParticles();
+    setTimeout(animateOnScroll, 300);
+    initTestimonialCarousel();
+    
+    // Add hover effect for program cards
+    document.querySelectorAll('.program-card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            if (window.innerWidth > 768) { // Only on desktop
+                card.style.transform = 'translateY(-10px)';
+            }
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            if (window.innerWidth > 768) { // Only on desktop
+                card.style.transform = 'translateY(0)';
+            }
+        });
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

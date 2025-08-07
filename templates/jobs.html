@@ -1,0 +1,30 @@
+
+{% extends "base.html" %}
+
+{% block title %}Career Opportunities - DONOTECH SOLUTIONS{% endblock %}
+
+{% block content %}
+
+<section class="hero-section">
+    <div class="container text-center">
+        <a href="{% url 'programs' %}" class="btn btn-light mb-3" style="color: var(--primary-color); font-weight: 600; border-radius: var(--border-radius); padding: 0.5rem 1rem; text-decoration: none; display: inline-block;">&larr; Back to Programs</a>
+        <h1 class="display-4 fw-bold mb-3">Career Opportunities</h1>
+        <p class="lead mb-4">Discover exciting job opportunities and kickstart your career with our placement assistance programs.</p>
+    </div>
+</section>
+<style>
+        :root {
+        /* Modern Color Palette */
+        --primary-color:#4361ee;
+        --primary-light: #e0e7ff;
+        --primary-dark: #3730a3;
+        }
+    .hero-section {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        padding: 5rem 0;
+        margin-bottom: 3rem;
+    }
+</style>
+
+{% endblock %}

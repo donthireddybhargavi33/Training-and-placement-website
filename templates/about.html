@@ -1,0 +1,715 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - DONOTECH SOLUTIONS{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        --primary-color: #4361ee;
+        --primary-light: #e0e7ff;
+        --primary-dark: #3730a3;
+        --primary-hover: #009cd0;
+        --secondary-color: #f72585;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
+        --border-radius: 12px;
+        --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    /* Hero Section */
+    .hero-section {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+        color: white;
+        padding: 8rem 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 0;
+        height:610px;
+    }
+    
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat;
+        opacity: 0.15;
+        z-index: 0;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 1s ease;
+        margin-top: 50px;
+    }
+    
+    .hero-section h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .hero-section p {
+        font-size: 1.5rem;
+        max-width: 700px;
+        margin: 0 auto 2rem;
+    }
+    
+    /* Section Styling */
+    .section {
+        padding: 6rem 0;
+        position: relative;
+        margin-bottom: 0;
+    }
+    
+    .section-title {
+        position: relative;
+        margin-bottom: 4rem;
+        text-align: center;
+        font-weight: 700;
+        color: var(--dark-color);
+    }
+    
+    .section-title:after {
+        content: '';
+        position: absolute;
+        width: 80px;
+        height: 5px;
+        background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 5px;
+    }
+    
+    .bg-light {
+        background-color: var(--light-color) !important;
+    }
+    
+    /* Card Styling */
+    .card {
+        border: none;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        transition: var(--transition);
+        height: 100%;
+        overflow: hidden;
+        background: white;
+    }
+    
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card-body {
+        padding: 2rem;
+    }
+    
+    .card-icon {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+    
+    /* Team Section */
+    .team-img {
+        height: 280px;
+        object-fit: cover;
+        width: 100%;
+        transition: var(--transition);
+    }
+    
+    .card:hover .team-img {
+        transform: scale(1.05);
+    }
+    
+    .team-social {
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: var(--transition);
+    }
+    
+    .card:hover .team-social {
+        bottom: 20px;
+        opacity: 1;
+    }
+    
+    .team-social a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        margin: 0 5px;
+        transition: var(--transition);
+    }
+    
+    .team-social a:hover {
+        background: var(--secondary-color);
+        transform: translateY(-5px);
+    }
+    
+    /* Partner Logos */
+    .partner-logo {
+        height: 80px;
+        object-fit: contain;
+        filter: grayscale(100%) brightness(0.8);
+        transition: var(--transition);
+        padding: 15px;
+    }
+    
+    .partner-logo:hover {
+        filter: grayscale(0%) brightness(1);
+        transform: scale(1.1);
+    }
+    
+    /* Timeline */
+    .timeline {
+        position: relative;
+        padding-left: 50px;
+    }
+    
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 20px;
+        top: 0;
+        height: 100%;
+        width: 3px;
+        background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+    }
+    
+    .timeline-item {
+        position: relative;
+        margin-bottom: 40px;
+        padding: 20px;
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: var(--transition);
+    }
+    
+    .timeline-item:hover {
+        transform: translateX(10px);
+    }
+    
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -40px;
+        top: 30px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        border: 4px solid white;
+        box-shadow: 0 0 0 3px var(--primary-color);
+    }
+    
+    .timeline-year {
+        position: absolute;
+        left: -120px;
+        top: 25px;
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+    
+    /* Stats Counter */
+    .stats-counter {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+        color: white;
+        padding: 5rem 0;
+        text-align: center;
+        margin-bottom: 0;
+    }
+    
+    .stat-item {
+        padding: 20px;
+    }
+    
+    .stat-number {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+    
+    .stat-label {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+    
+    /* CTA Section */
+    .cta-section {
+        background: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat;
+        padding: 6rem 0;
+        position: relative;
+        color: white;
+        text-align: center;
+        margin-bottom: 0;
+    }
+    
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+    }
+    
+    .cta-content {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .cta-btn {
+        background: var(--secondary-color);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        border-radius: 50px;
+        transition: var(--transition);
+        box-shadow: 0 10px 20px rgba(247, 37, 133, 0.3);
+    }
+    
+    .cta-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(247, 37, 133, 0.4);
+        background: #e5177e;
+        color: white;
+    }
+
+    /* Leadership Section Styling */
+    .leadership-card {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        height: 100%;
+        margin-bottom: 0;
+    }
+    
+    .leadership-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    
+    .leader-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .leadership-card:hover .leader-img {
+        transform: scale(1.03);
+    }
+    
+    .leader-info {
+        padding: 2rem;
+    }
+    
+    .leader-name {
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 0.5rem;
+        font-size: 1.5rem;
+    }
+    
+    .leader-title {
+        color: #4361ee;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+    }
+    
+    .leader-bio {
+        color: #4a5568;
+        line-height: 1.6;
+    }
+    
+    .company-list {
+        padding-left: 1.2rem;
+        margin: 1rem 0;
+    }
+    
+    .company-list li {
+        margin-bottom: 0.5rem;
+        position: relative;
+    }
+    
+    .company-list li::before {
+        content: "•";
+        color:  #4361ee;
+        font-weight: bold;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+    }
+    
+    .leader-social {
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        opacity: 0;
+        transition: all 0.4s ease;
+    }
+    
+    .leadership-card:hover .leader-social {
+        opacity: 1;
+        bottom: 30px;
+    }
+    
+
+    /* Motivational Quote */
+    .motivational-quote {
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin: 0;
+        line-height: 1.4;
+    }
+    
+    .highlight {
+        color: #f72585;
+        font-weight: 600;
+    }
+
+    /* Image Hover Effect */
+    .img-hover-zoom {
+        overflow: hidden;
+        border-radius: var(--border-radius);
+    }
+    
+    .img-hover-zoom img {
+        transition: transform 0.5s ease;
+    }
+    
+    .img-hover-zoom:hover img {
+        transform: scale(1.05);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+        .leader-info {
+            padding: 1.5rem;
+        }
+        
+        .hero-section h1 {
+            font-size: 2.8rem;
+        }
+        
+        .hero-section p {
+            font-size: 1.2rem;
+        }
+        
+        .section {
+            padding: 4rem 0;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 6rem 0;
+        }
+        
+        .hero-section h1 {
+            font-size: 2.2rem;
+        }
+        
+        .timeline-year {
+            position: static;
+            display: block;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .timeline::before {
+            left: 10px;
+        }
+        
+        .timeline-item::before {
+            left: -30px;
+        }
+        
+        .leadership-card .row {
+            flex-direction: column;
+        }
+        
+        .leader-img {
+            height: 300px;
+        }
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-delay-1 {
+        animation-delay: 0.2s;
+    }
+    
+    .animate-delay-2 {
+        animation-delay: 0.4s;
+    }
+    
+    /* Remove extra space below footer */
+    body {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    
+    footer {
+        margin-top: 0;
+    }
+</style>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="display-3 fw-bold mb-4">Innovating Career Development</h1>
+            <p class="lead mb-4">Empowering the next generation of tech professionals through cutting-edge training and industry partnerships</p>
+            <a href="#our-story" class="btn btn-light btn-lg px-4 py-2 rounded-pill shadow-sm">Explore Our Journey</a>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="our-story" class="section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <h2 class="section-title">Our Story</h2>
+                <p class="lead mb-4">Donotech Solutions – Established 2025</p>
+                <p>Launched in 2025, Donotech Solutions is a next-generation career development institute focused on preparing individuals for the evolving demands of the technology and business world.Our programs are designed to meet today's industry standards through a blend of hands-on training, real-world projects, and direct exposure to current tools and practices. Backed by industry collaboration and expert-led instruction, we aim to bridge the gap between education and employability.Whether you're entering the workforce or reskilling for a new path, Donotech Solutions provides the practical foundation and forward-focused learning you need to succeed in today's fast-paced job market.</p>
+                <div class="d-flex mt-4">
+                    <div class="pe-4">
+                        <h3 class="text-primary">95%</h3>
+                        <p>Placement Rate</p>
+                    </div>
+                    <div>
+                        <h3 class="text-primary">24/7</h3>
+                        <p>Student Support</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="position-relative img-hover-zoom">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Our Team" class="img-fluid rounded-3 shadow-lg" style="max-height: 500px; width: 100%; object-fit: cover;">
+                    <div class="position-absolute bottom-0 start-0 bg-transparent text-white p-3 rounded-end" style="width: 80%;">
+                        <p class="motivational-quote">
+                          "Your career is like code - <span class="highlight">every error</span> teaches you how to write a <span class="highlight">better solution</span>."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mission/Vision Section -->
+<section class="section bg-light">
+    <div class="container">
+        <h2 class="section-title">Our Core Philosophy</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="card-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3>Our Mission</h3>
+                        <p>To bridge the gap between academic learning and professional requirements through practical training and mentorship, creating a workforce that's ready to tackle tomorrow's challenges.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="card-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3>Our Vision</h3>
+                        <p>To become the most trusted career development partner for students and professionals in the technology sector, recognized globally for our innovative approach to education.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="card-icon">
+                            <i class="fas fa-hand-holding-heart"></i>
+                        </div>
+                        <h3>Our Values</h3>
+                        <p>Excellence in delivery, Integrity in action, Innovation in approach, and an unwavering commitment to Student Success drive everything we do.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Timeline Section -->
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">Our Journey</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">2014</div>
+                <div class="timeline-content">
+                    <h3>Founding of DONO CONSULTANCY</h3>
+                    <p>DONO CONSULTANCY was established in 2014 as a boutique consultancy firm, operating from a single office & It is a dedicated telecalling services for academic institutions, focusing on student admissions,  and educational support communication. This initiative marked a strategic shift into the education support sector, the company laid the foundation for its future expansion into BPO and IT services.</p>
+            </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2023</div>
+                <div class="timeline-content">
+                    <h3>Incorporation of DONO BPO & IT SOLUTIONS PVT. LTD.</h3>
+        <p>Officially registered as a private limited company, DONO BPO & IT SOLUTIONS PVT. LTD. specializes in Business Process Outsourcing (BPO), IT services, and business support operations. The company primarily focuses on student admissions through tele-calling, providing targeted outreach and personalized assistance to educational institutions. Additionally, DONO is backed by a skilled digital marketing team that enhances brand visibility and lead generation through strategic online campaigns, making it a comprehensive partner for academic outreach and marketing solutions.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2025</div>
+                <div class="timeline-content">
+                    <h3>Launch of DONOTECH SOLUTIONS</h3>
+                    <p>Evolving to meet market demands, DONOTECH Solutions was launched with a focused mission: bridging the skills gap between academia and industry through targeted training programs and professional mentorship initiatives.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Leadership Section - Split Layout -->
+<section class="section bg-light">
+    <div class="container">
+        <h2 class="section-title">Meet Our Leadership</h2>
+        <p class="text-center mb-5">Our visionary leader bring decades of combined experience bridging education and technology.</p>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-lg overflow-hidden">
+                    <div class="row g-0 align-items-center">
+
+                        <div class="col-md-12 p-4 p-lg-5">
+                            <div class="card-body">
+                                <h3 class="h2 fw-bold text-primary">Bai Ram Reddy Anduri</h3>
+                                <p class="text-uppercase text-muted mb-4">Founder & CEO</p>
+                                <div class="leader-bio">
+                                    <p class="mb-4">Seasoned corporate leader with 2+ years in governance. Currently serves as Director for multiple companies including:</p>
+                                    <ul class="list-unstyled mb-4">
+                                        <li class="mb-2 d-flex">
+                                            <span class="me-2 text-primary">•</span>
+                                            <span>Ram Reddy Comfort Stay Private Limited</span>
+                                        </li>
+                                        <li class="mb-2 d-flex">
+                                            <span class="me-2 text-primary">•</span>
+                                            <span>Ram Reddy Career Solutions Private Limited</span>
+                                        </li>
+                                        <li class="d-flex">
+                                            <span class="me-2 text-primary">•</span>
+                                            <span>Ram Reddy Dono BPO & IT Solutions</span>
+                                        </li>
+                                    </ul>
+                                    <p class="mb-0">Specializes in strategic business development and operational excellence.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h3 class="display-5 fw-bold mb-4">Be Part of DONOTECH—Shape the Future of Tech!</h3>
+            <p class="lead mb-5">Kickstart your journey with industry-aligned training, expert mentorship, and hands-on experience. </p>
+            <a href="{% url 'contact' %}" class="cta-btn">Get Started Today</a>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Animate stats counter
+    document.addEventListener('DOMContentLoaded', function() {
+        const statNumbers = document.querySelectorAll('.stat-number');
+        const speed = 200;
+        
+        statNumbers.forEach(stat => {
+            const target = parseInt(stat.textContent);
+            const increment = target / speed;
+            let current = 0;
+            
+            // Reset for animation
+            stat.textContent = '0';
+            
+            const updateCount = () => {
+                current += increment;
+                if (current < target) {
+                    stat.textContent = Math.floor(current);
+                    setTimeout(updateCount, 1);
+                } else {
+                    stat.textContent = target;
+                }
+            };
+            
+            // Start counting when element is in viewport
+            const observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    updateCount();
+                    observer.unobserve(stat);
+                }
+            });
+            
+            observer.observe(stat);
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    });
+</script>
+
+{% endblock %}

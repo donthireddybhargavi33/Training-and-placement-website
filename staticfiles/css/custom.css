@@ -1,0 +1,70 @@
+/* Added HeroSlider-like styles for Prestigious Awards and Mentor Profile */
+
+/* For awards cards container */
+#awards .row {
+    position: relative;
+    color: white;
+}
+
+/* For mentors carousel items */
+#mentorsCarousel .carousel-item > div {
+    position: relative;
+    color: white;
+}
+
+/* Carousel indicators (dots) */
+.carousel-indicators {
+    bottom: 25px;
+}
+
+.carousel-indicators li {
+    background-color: white;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.carousel-indicators .active {
+    background-color: #f7b500;
+    opacity: 1;
+}
+
+/* Carousel controls (arrows) */
+.carousel-control-prev,
+.carousel-control-next {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    opacity: 1;
+    transition: background-color 0.3s;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-prev:focus,
+.carousel-control-next:hover,
+.carousel-control-next:focus {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Position prev and next arrows */
+.carousel-control-prev {
+    left: 10px;
+}
+
+.carousel-control-next {
+    right: 10px;
+}
+
+/* Override default carousel control icons to center them */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1);
+    width: 15px;
+    height: 15px;
+}

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ name }} - Resume</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Modern font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdfdfd;
+            --primary: #1d3557;
+            --secondary: #457b9d;
+            --accent: #e63946;
+            --text: #2b2d42;
+            --muted: #6c757d;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-color);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 30px 20px;
+            max-width: 950px;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+
+        .contact-info {
+            font-size: 0.95rem;
+            color: var(--muted);
+            margin-top: 10px;
+        }
+
+        .contact-info span:not(:last-child)::after {
+            content: "•";
+            margin: 0 10px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-bottom: 15px;
+        }
+
+        .subsection-title {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.05rem;
+        }
+
+        .subsection-period {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-bottom: 5px;
+        }
+
+        p {
+            font-size: 0.96rem;
+            margin-top: 2px;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-item {
+            background: var(--card-bg);
+            border: 1px solid #ddd;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        .personal-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .personal-info strong {
+            color: var(--secondary);
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 30px auto 0;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .download-btn:hover {
+            background: #d62839;
+        }
+
+        @media print {
+            .download-btn {
+                display: none;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+        <a href="{% url 'resume_form' %}" class="btn btn-light mb-3" style="color:var(--primary-color); font-weight: 600; border-radius: var(--border-radius); padding: 0.5rem 1rem; text-decoration: none; display: inline-block;">&larr; Back</a>
+    <div class="header">
+        <h1>{{ name }}</h1>
+        <div class="contact-info">
+            {% if email %}<span>{{ email }}</span>{% endif %}
+            {% if phone %}<span>{{ phone }}</span>{% endif %}
+            {% if linkedin %}<span>{{ linkedin }}</span>{% endif %}
+        </div>
+    </div>
+
+    {% if summary %}
+    <div class="section">
+        <div class="section-title">Professional Summary</div>
+        <p>{{ summary }}</p>
+    </div>
+    {% endif %}
+
+    {% if skills %}
+    <div class="section">
+        <div class="section-title">Skills</div>
+        <div class="skills-list">
+            {% for skill in skills %}
+                <div class="skill-item">{{ skill }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if work_experience %}
+    <div class="section">
+        <div class="section-title">Work Experience</div>
+        {% for exp in work_experience %}
+        <div class="subsection">
+            <div class="subsection-title">{{ exp.role }} at {{ exp.company }}</div>
+            <div class="subsection-period">{{ exp.period }}</div>
+            <p>{{ exp.details }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if education %}
+    <div class="section">
+        <div class="section-title">Education</div>
+        {% for edu in education %}
+        <div class="subsection">
+            <div class="subsection-title">{{ edu.name }}</div>
+            <div class="subsection-period">{{ edu.period }}</div>
+            <p>{{ edu.details }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if projects %}
+    <div class="section">
+        <div class="section-title">Projects</div>
+        {% for proj in projects %}
+        <div class="subsection">
+            <div class="subsection-title">{{ proj.title }} ({{ proj.year }})</div>
+            <p>{{ proj.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if leadership %}
+    <div class="section">
+        <div class="section-title">Leadership</div>
+        <ul>
+            {% for item in leadership %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {% if achievements %}
+    <div class="section">
+        <div class="section-title">Achievements</div>
+        <ul>
+            {% for item in achievements %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <div class="section">
+        <div class="section-title">Personal Information</div>
+        <div class="personal-info">
+            {% if personal.father_name %}<div><strong>Father's Name:</strong> {{ personal.father_name }}</div>{% endif %}
+            {% if personal.dob %}<div><strong>Date of Birth:</strong> {{ personal.dob }}</div>{% endif %}
+            {% if personal.gender %}<div><strong>Gender:</strong> {{ personal.gender }}</div>{% endif %}
+            {% if personal.languages %}<div><strong>Languages:</strong> {{ personal.languages }}</div>{% endif %}
+            {% if personal.marital_status %}<div><strong>Marital Status:</strong> {{ personal.marital_status }}</div>{% endif %}
+            {% if personal.address %}<div><strong>Address:</strong> {{ personal.address }}</div>{% endif %}
+        </div>
+    </div>
+
+
+
+</body>
+</html>
