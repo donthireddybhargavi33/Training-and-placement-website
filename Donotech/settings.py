@@ -27,6 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-nzl92wk@w#8dh*1c1i5sg
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    'dono-tech-solutions.onrender.com',  # Your specific Render domain
     '.onrender.com',  # For Render.com deployment
     '.herokuapp.com',  # For Heroku deployment
     # Add your custom domain here when ready
@@ -38,14 +39,13 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
+    'https://dono-tech-solutions.onrender.com',
     'https://*.onrender.com',
     'https://*.herokuapp.com',
 ]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
