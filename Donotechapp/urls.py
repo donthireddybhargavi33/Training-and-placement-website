@@ -30,7 +30,6 @@ urlpatterns = [
     path('projects/', views.projects, name='projects'),
     path('strategy/', views.strategy, name='strategy'),
     path('my_courses/',views.mycourses, name='my_courses'),
-    path('gen_resume/', views.gen_resume, name='gen_resume'),
     path('resume_form/',views.resume_form,name='resume_form'),
 
 ]  

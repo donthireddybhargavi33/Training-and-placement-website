@@ -20,11 +20,9 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# In production, use environment variable or secure key management
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-nzl92wk@w#8dh*1c1i5sg2xcs555_e@q881gif=#-mf2m$70jg')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -43,6 +41,11 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.onrender.com',
     'https://*.herokuapp.com',
 ]
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -93,19 +96,12 @@ WSGI_APPLICATION = 'Donotech.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# Use PostgreSQL in production, SQLite in development
-if os.environ.get('DATABASE_URL'):
-    import dj_database_url
-    DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+}
 
 
 # Password validation
@@ -157,41 +153,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/login/'
 
-# Security settings for production
-if not DEBUG:
-    # HTTPS settings - Adjusted for Render.com deployment
-    # Render handles SSL termination at the proxy level
-    SECURE_SSL_REDIRECT = False  # Let Render handle HTTPS redirects
-    SECURE_HSTS_SECONDS = 31536000  # 1 year
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-    
-    # Cookie security - Keep these for HTTPS
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    
-    # Additional security headers
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    X_FRAME_OPTIONS = 'DENY'
-else:
-    # Development settings - more permissive
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
-    CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
-
-
-
-
-
-# Email configuration for sending contact form details to admin
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'rbhargavi846@gmail.com')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'ajnq uexu jkww tycw')
-ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', 'rbhargavi846@gmail.com')
 
 
 JAZZMIN_SETTINGS = {
@@ -336,3 +297,65 @@ JAZZMIN_SETTINGS = {
     # Add a language dropdown into the admin
     "language_chooser": True,
 }
+
+
+# Email configuration for sending contact form details to admin
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'rbhargavi846@gmail.com'
+EMAIL_HOST_PASSWORD = 'ajnq uexu jkww tycw' # Removed spaces from app password
+
+# Add ADMIN_EMAIL for contact form recipient
+ADMIN_EMAIL = 'rbhargavi846@gmail.com'
+
+
+
+# Database
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+
+# Use PostgreSQL in production, SQLite in development
+if os.environ.get('DATABASE_URL'):
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+
+
+
+# Security settings for production
+if not DEBUG:
+    # HTTPS settings - Adjusted for Render.com deployment
+    # Render handles SSL termination at the proxy level
+    SECURE_SSL_REDIRECT = False  # Let Render handle HTTPS redirects
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    
+    # Cookie security - Keep these for HTTPS
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    
+    # Additional security headers
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+else:
+    # Development settings - more permissive
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
+
+
+
+
+
