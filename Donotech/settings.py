@@ -36,6 +36,14 @@ ALLOWED_HOSTS = [
     # 'www.your-domain.com',
 ]
 
+# CSRF settings for deployment
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'https://*.onrender.com',
+    'https://*.herokuapp.com',
+]
+
 
 # Application definition
 
@@ -166,6 +174,11 @@ if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
+else:
+    # Development settings - more permissive
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
 
 
 
