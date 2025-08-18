@@ -182,6 +182,18 @@ else:
 
 
 
+
+
+# Email configuration for sending contact form details to admin
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'rbhargavi846@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'ajnq uexu jkww tycw')
+ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', 'rbhargavi846@gmail.com')
+
+
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
     "site_title": "Admin",
@@ -324,13 +336,3 @@ JAZZMIN_SETTINGS = {
     # Add a language dropdown into the admin
     "language_chooser": True,
 }
-
-
-# Email configuration for sending contact form details to admin
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'rbhargavi846@gmail.com')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'ajnq uexu jkww tycw')
-ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', 'rbhargavi846@gmail.com')
