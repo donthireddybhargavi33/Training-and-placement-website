@@ -151,13 +151,14 @@ LOGIN_URL = '/login/'
 
 # Security settings for production
 if not DEBUG:
-    # HTTPS settings
-    SECURE_SSL_REDIRECT = True
+    # HTTPS settings - Adjusted for Render.com deployment
+    # Render handles SSL termination at the proxy level
+    SECURE_SSL_REDIRECT = False  # Let Render handle HTTPS redirects
     SECURE_HSTS_SECONDS = 31536000  # 1 year
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     
-    # Cookie security
+    # Cookie security - Keep these for HTTPS
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     
