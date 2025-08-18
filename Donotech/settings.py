@@ -85,12 +85,19 @@ WSGI_APPLICATION = 'Donotech.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Use PostgreSQL in production, SQLite in development
+if os.environ.get('DATABASE_URL'):
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -117,7 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/kolkata'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -310,8 +317,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'rbhargavi846@gmail.com'
-EMAIL_HOST_PASSWORD = 'ajnq uexu jkww tycw' # Removed spaces from app password
-
-# Add ADMIN_EMAIL for contact form recipient
-ADMIN_EMAIL = 'rbhargavi846@gmail.com'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'rbhargavi846@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'ajnq uexu jkww tycw')
+ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', 'rbhargavi846@gmail.com')
